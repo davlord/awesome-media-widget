@@ -6,16 +6,6 @@ local setmetatable = setmetatable
 
 local player_widget = { mt = {}}
 
-function player_widget:toggle_play_pause()
-    local player = self._private.player
-    local status = player.playback_status
-    if status == "PLAYING" then
-        player:pause()
-    elseif status == "PAUSED" or status == "STOPPED" then
-        player:play()
-    end
-end
-
 function player_widget:has_player(player)
     return self._private.player == player
 end
@@ -79,7 +69,9 @@ local function new(args)
     w:update()
 
     w:buttons(gtable.join(
-        awful.button({ }, 1, function() w:toggle_play_pause() end)
+        awful.button({ }, 1, function() player:play_pause() end),
+        awful.button({ }, 4, function() player:next() end),
+        awful.button({ }, 5, function() player:previous() end)
     ))
 
     return w
